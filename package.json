@@ -1,0 +1,14 @@
+{
+  "name": "operationcondorserver",
+  "version": "0.0.0",
+  "description": "Server for the Condor MUD",
+  "main": "index.js",
+  "author": "BananaYeti",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
