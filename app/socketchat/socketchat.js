@@ -3,6 +3,7 @@ function openSockets(io){
         console.log('client connected');
         client.on('message', (data)=>{
             io.emit('message', data);
+            console.log(data);
         });
     });
 }
