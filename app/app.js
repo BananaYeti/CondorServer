@@ -6,7 +6,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 
 var server = require('http').createServer(app);
-var port = process.env.port || 8800;
+var port = process.env.port || 8000;
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
