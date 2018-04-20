@@ -1,17 +1,53 @@
+//Imports
 var path = require('path');
-
 var express = require('express');
-var app = express();
-app.use(express.static(path.join(__dirname, '../public')));
+var io = require('socket.io');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var socketIO = require('socket.io');
+var expressSession = require('express-session');
 
+var config = require('../config.js');
 
-var server = require('http').createServer(app);
-var port = process.env.port || 8000;
-server.listen(port, function () {
-    console.log('Server listening at port %d', port);
+mongoose.connect(config.mongourl, function(err){
+    console.log('Connected to mongo server at: ' + config.mongourl);
+    startApp();
 });
 
-var io = require('socket.io')(server);
-require('./socketchat/socketchat.js')(io);
+function startApp(){
+    var app = express();
 
-var path = require('path');
+    setupMiddleware(app);
+
+    var server = require('http').createServer(app);
+    var port = config.port || 8000;
+    server.listen(port, function () {
+        console.log('Server listening at port %d', port);
+    });
+
+    setupSocketRoutes(server);
+    setupRoutes(app);
+}
+
+//Initializing express appp
+function setupMiddleware(app){
+    app.use(bodyParser.urlencoded({extended: true }));
+    app.use(bodyParser.json());
+
+    app.use(expressSession(config.sessionOps));
+    app.use(passport.initialize());
+    app.use(passport.session());
+    require('./userAuth/passport.js')(passport);
+
+    app.use(express.static(path.join(__dirname, '../public')));
+}
+
+function setupSocketRoutes(httpSever){
+    var ioServer = socketIO(httpSever);
+    require('./socketchat/socketchat.js')(ioServer);
+}
+
+function setupRoutes(app){
+    require('./userAuth/userAuth.js')(app, passport);
+}
