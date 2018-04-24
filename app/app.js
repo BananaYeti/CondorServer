@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var socketIO = require('socket.io');
-var expressSession = require('express-session');
+var cors = require('cors');
 
 var config = require('../config.js');
 
@@ -35,12 +35,17 @@ function setupMiddleware(app){
     app.use(bodyParser.urlencoded({extended: true }));
     app.use(bodyParser.json());
 
-    app.use(expressSession(config.sessionOps));
     app.use(passport.initialize());
     app.use(passport.session());
     require('./userAuth/passport.js')(passport);
 
-    app.use(express.static(path.join(__dirname, '../public')));
+    //Allows local react server to successfully connect
+    app.use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true
+    }));
+
+    //app.use(express.static(path.join(__dirname, '../public')));
 }
 
 function setupSocketRoutes(httpSever){
