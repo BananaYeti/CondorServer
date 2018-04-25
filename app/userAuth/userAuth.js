@@ -11,7 +11,7 @@ function setupRoutes(app, passport){
                 success:true,
                 message:"You should now be able to log in"
             });
-        });
+        })(req, res, next);
     });
     app.post('/login', (req, res, next) => {
         return passport.authenticate('login', (err, token, data) => {

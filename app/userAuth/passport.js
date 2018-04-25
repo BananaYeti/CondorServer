@@ -48,17 +48,21 @@ module.exports = function(passport){
             session:false
         },
         function(req, username, password, done){
+            console.log('hasing password');
             passwordUtil.hash(password, function(err, hashedPassword, newSalt){
                 if(err){
                     return done(err);
                 }
                 else{
+                    console.log('password hashed');
                     var userdata = {
                         username: username,
                         password: hashedPassword,
                         passwordSalt: newSalt
                     }
+                    console.log('running mongoose create');
                     User.create(userdata, function(err, user){
+                        console.log('creation complete');
                         if(err){
                             return done(err);
                         }

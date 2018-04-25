@@ -45,7 +45,7 @@ function setupMiddleware(app){
         credentials: true
     }));
 
-    //app.use(express.static(path.join(__dirname, '../public')));
+    app.use(express.static(path.join(__dirname, '../public')));
 }
 
 function setupSocketRoutes(httpSever){
