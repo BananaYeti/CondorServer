@@ -6,11 +6,23 @@ var PartSchema = new  mongoose.Schema({
         unique:false,
         required:true
     },
-    stats : {
+    adjectives : {
         type:Array,
         unique:false,
         required:true,
         default:[]
+    },
+    noun : {
+        type:Object,
+        unique:false,
+        required:true,
+        default:{}
+    },
+    suffix : {
+        type:Object,
+        unique:false,
+        required:true,
+        default:{}
     },
     hardpointsLength : {
         type:Number,

@@ -5,7 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var config = require('../../config');
 const jwt = require('jsonwebtoken');
 
-module.exports = function(passport){
+function setupStrategies(passport){
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
@@ -23,11 +23,13 @@ module.exports = function(passport){
         function(req, username, password, done) {
             User.authenticate(username, password, function(err, user) {
                 if (err) {
+                    console.log('Mongo error');
                     return done(err);
                 }
                 if (!user) {
                     var error = new Error('Username or password invalid.');
                     error.name = "InvalidLoginCredentials";
+                    console.log('No user exists');
                     return done(error, false);
                 }
                 var tokenPayload = {
@@ -55,28 +57,63 @@ module.exports = function(passport){
                     return done(err);
                 }
                 else{
-                    console.log('password hashed');
                     var userdata = {
                         username: username,
                         password: hashedPassword,
                         passwordSalt: newSalt
                     }
-                    console.log('running mongoose create');
                     User.create(userdata, function(err, user){
                         if(err){
                             return done(err);
                         }
-                        return done(null);
-                    });
-                    Mech.create({}, function(err, mech){
-                        console.log('creation complete');
-                        if(err){
-                            return done(err);
-                        }
-                        return done(null);
+                        console.log('User created successfully');
+                        Mech.create({userID:user._id}, function(err, mech){                    
+                            if(err){
+                                return done(err);
+                            }
+                            console.log('Mech created successfully');
+                            console.log('mech id is: ' + mech._id);
+                            user.update({$set: {mechID:mech._id}}, (err)=>{
+                                if(err){
+                                    return done(err);
+                                }
+                                return done(null);
+                            });
+                        });
                     });
                 }
             });
         }
     ));
+}
+
+function verifyUserRoute(req, res, next){
+    console.log('verifying user');
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, config.jwtsecret, function (err, decoded) {
+            if (err) {
+                var err = new Error('You are not authenticated!');
+                err.status = 401;
+                return next(err);
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        var err = new Error('No token provided!');
+        err.status = 403;
+        return next(err);
+    }
+}
+
+module.exports = {
+    setupStrategies,
+    verifyUserRoute
 }

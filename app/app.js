@@ -37,7 +37,7 @@ function setupMiddleware(app){
 
     app.use(passport.initialize());
     app.use(passport.session());
-    require('./userAuth/passport.js')(passport);
+    require('./userAuth/passport.js').setupStrategies(passport);
 
     //Allows local react server to successfully connect
     app.use(cors({
@@ -56,5 +56,6 @@ function setupSocketRoutes(httpSever){
 function setupRoutes(app){
     require('./userAuth/userAuth.js')(app, passport);
     require('./bouts/matchmaking.js')(app);
-    require('./partGeneration/generationHandler.js')(app)
+    require('./partGeneration/generationHandler.js')(app);
+    require('./mech/mechRoutes.js')(app);
 }

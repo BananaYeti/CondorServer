@@ -1,0 +1,121 @@
+var User = require('../models/user');
+var Mech = require('../models/mech');
+
+function cleanMech(mech){
+    return Object.assign({},mech._doc,{_id:undefined, userID:undefined,__v:undefined});
+}
+
+function getMech(uid, callback){
+    Mech.findOne({userID:uid}, function(err, mech){
+        if(err){
+            callback(null);
+        }else {
+            callback(mech);
+        }
+    });    
+}
+
+function removePart(mech, point, done){
+    var parent = getParent(mech, point);
+    var part = getPart(mech, point);
+    if(part == null || parent == null){
+        done(mech);
+    }
+    parent.hardpoints[point[point.length - 1]] = null;
+    mech.inventory = [...mech.inventory, part];
+    mech.markModified('inventory');
+    mech.markModified('hardpoints');
+    console.log('..saving');
+    console.log(mech);
+    mech.save(function(err, mech){
+        if(err){
+            console.log(error);
+            done(null);
+        } else {
+            done(mech);
+        }
+    });
+}
+
+function installPart(mech, invSlot, point, done){
+    var parent = getParent(mech, point);
+    var part = mech.inventory[invSlot]
+    if(part == null || parent == null){
+        done(mech);
+    }
+    parent.hardpoints[point[point.length - 1]] = part;
+    mech.inventory.splice(invSlot,1);
+    mech.markModified('inventory');
+    mech.markModified('hardpoints');
+    console.log('..saving');
+    console.log(mech);
+    mech.save(function(err, mech){
+        if(err){
+            console.log(error);
+            done(null);
+        } else {
+            done(mech);
+        }
+    });    
+}
+
+function movePart(mech, point, endPoint, done){
+    var parent = getParent(mech, point);
+    var endParent = getParent(mech, endPoint);
+    var part = getPart(mech, point);
+    var endPart = getPart(mech, endPoint);
+    if(endPart != null || parent == null || part == null || endParent == null){
+        return(mech);
+    }
+    parent.hardpoints[point[point.length - 1]] = null;
+    endParent.hardpoints[endPoint[endPoint.length - 1]] = part;
+    mech.markModified('inventory');
+    mech.markModified('hardpoints');
+    console.log('..saving');
+    console.log(mech);
+    mech.save(function(err, mech){
+        if(err){
+            console.log(error);
+            done(null);
+        } else {
+            done(mech);
+        }
+    });
+}
+
+function swapParts(mech, pointA, pointB, done){
+    var parentA = getParent(mech, pointA);
+    var parentB = getParent(mech, pointB);
+    var partA = getPart(mech, pointA);
+    var partB = getPart(mech, pointB);
+}
+
+function getPart(mech, point){
+    var part = mech;
+    for(var index of point){
+        if(part.hardpoints && part.hardpoints[index]){
+            part = part.hardpoints[index];
+        } else {
+            return null;
+        }
+    }
+    return part;
+}
+
+function getParent(mech, point){
+    if(point.length < 1){
+        return null;
+    } else {
+        var parentPoint = [...point];
+        parentPoint.splice(-1,1);
+        return getPart(mech, parentPoint);
+    }
+}
+
+module.exports = {
+    getMech,
+    cleanMech,
+    removePart,
+    installPart,
+    movePart
+}

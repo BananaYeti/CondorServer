@@ -1,57 +1,47 @@
-var attackBases = {
-    Fist
-    Gauntlet
-    Blade
-    Sword
-    Gun
-    Cannon
-    Chainsaw
-    Rifle
-    Rocket Launcher
-    Machine Gun
-    Flamethrower
-    Laser
-    Mortar
-}
+var Grammars = {
+nouns:{
+  {
+    name:"Fist"
+    stats:[
+      pierceAttack:10,
+      serrateAttack:0,
+      impactAttack:0,
+      attackSpeed:10,
+      accuracy:75,
+      critChance:10,
+      critMult:2,
+      energy:-10,
+    ]
+  },
+  {
+    name:"Gun"
+    stats:[
+      pierceAttack:1,
+      serrateAttack:0,
+      impactAttack:0,
+      attackSpeed:100,
+      accuracy:0.8,
+      critChance:0.5,
+      critMult:1.5,
+      energy:-1,
+    ]
+  },
+},
 
-var defenseBases = {
-    Shield
-    Plating
-    Armor
-    Carapace
-    Mesh
-    Weave
-    Rig
-}
-
-var appendages  = {
-
-}
-
-var descriptors = {
-    Flame
-    Rapid Fire
-    Electro
-    Advanced
-    Plated
-    Nano
-    Super
-    Gauss
-    Rail
-    Acid
-    Impact
-    Concussive
-    Energy
-    Defensive
-    Heavy
-    Impaling
-    Penetrating
-    Shock
-    Stun
-    Chemical
-    Plasma
-    Sticky
-}
+adjectives:{
+  {
+    name:"Penetrating",
+    stats:[
+      pierceAttack:10,
+    ]
+  },
+  {
+    name:"Impacting",
+    stats:[
+      impactAttack:10,
+    ]
+  },
+},
 
 var suffixes = {
   {name:'Mk1',  multiplier:1.3},
@@ -62,6 +52,10 @@ var suffixes = {
   {name:'XX',   multiplier:2.2},
   {name:'XXX',  multiplier:3.2},
   {name:'XL',   multiplier:4.2},
+  {name:'+1',   multiplier:2.5},
+  {name:'+2',   multiplier:2.6},
+  {name:'+3',   multiplier:2.7},
+  {name:'+4',   multiplier:2.8},
   {name:'1000', multiplier:1.1},
   {name:'2000', multiplier:2.1},
   {name:'3000', multiplier:3.1},
@@ -71,3 +65,8 @@ var suffixes = {
   {name:'V3',   multiplier:3},
   {name:'V4',   multiplier:4},
 }
+}
+
+
+
+module.exports = Grammars;

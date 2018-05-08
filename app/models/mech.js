@@ -18,6 +18,13 @@ var MechSchema = new  mongoose.Schema({
         unique:false,
         required:true,
         default:[]
+    },
+    userID:{
+        type: mongoose.Schema.Types.ObjectId, ref:'User'
+    },
+    inventory:{
+        type:Array,
+        default:[]
     }
 });
 
