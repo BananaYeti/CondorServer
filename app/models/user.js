@@ -21,11 +21,15 @@ var UserSchema = new  mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    mechID:{
+        type: mongoose.Schema.Types.ObjectId, ref:'Mech'
     }
 });
 
 UserSchema.statics.authenticate = function(username, password, callback) {  
     this.findOne({ username: username }).select('+password +passwordSalt').exec(function(err, user) {
+        console.log(err + ' ' + user);
         if (err) {
             return callback(err, null);
         }
@@ -43,6 +47,7 @@ UserSchema.statics.authenticate = function(username, password, callback) {
   
         // if password does not match don't return user
         if (result === false) {
+            console.log('user not auth');
           return callback(err, null);
         }
   

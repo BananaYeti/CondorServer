@@ -23,11 +23,13 @@ module.exports = function(passport){
         function(req, username, password, done) {
             User.authenticate(username, password, function(err, user) {
                 if (err) {
+                    console.log('Mongo error');
                     return done(err);
                 }
                 if (!user) {
                     var error = new Error('Username or password invalid.');
                     error.name = "InvalidLoginCredentials";
+                    console.log('No user exists');
                     return done(error, false);
                 }
                 var tokenPayload = {
@@ -55,25 +57,29 @@ module.exports = function(passport){
                     return done(err);
                 }
                 else{
-                    console.log('password hashed');
                     var userdata = {
                         username: username,
                         password: hashedPassword,
                         passwordSalt: newSalt
                     }
-                    console.log('running mongoose create');
                     User.create(userdata, function(err, user){
                         if(err){
                             return done(err);
                         }
-                        return done(null);
-                    });
-                    Mech.create({}, function(err, mech){
-                        console.log('creation complete');
-                        if(err){
-                            return done(err);
-                        }
-                        return done(null);
+                        console.log('User created successfully');
+                        Mech.create({userID:user._id}, function(err, mech){                    
+                            if(err){
+                                return done(err);
+                            }
+                            console.log('Mech created successfully');
+                            console.log('mech id is: ' + mech._id);
+                            user.update({$set: {mechID:mech._id}}, (err)=>{
+                                if(err){
+                                    return done(err);
+                                }
+                                return done(null);
+                            });
+                        });
                     });
                 }
             });

@@ -2,6 +2,7 @@ function setupRoutes(app, passport){
     app.post('/register', (req, res, next) => {
         return passport.authenticate('register', (err) => {
             if(err){
+                console.log(err);
                 return res.status(400).json({
                     sucess:false,
                     message:err.message
@@ -21,6 +22,13 @@ function setupRoutes(app, passport){
                     message:err.message
                 });
             }
+            if(!token){
+                return res.status(400).json({
+                    success:false,
+                    message:'Login unsuccessful'
+                });
+            }
+            console.log('No error occured: ' + err);
             return res.status(200).json({
                 success: true,
                 message: 'You have successfully logged in!',
