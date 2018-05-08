@@ -1,5 +1,6 @@
 var User = require('../models/user.js');
-var passwordUtil = require('../util/password.js'); 
+var Mech = require('../models/mech.js');
+var passwordUtil = require('../util/password.js');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require('../../config');
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,7 @@ module.exports = function(passport){
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
-    
+
     passport.deserializeUser(function(id, done) {
         User.findById(id, done);
     });
@@ -40,7 +41,7 @@ module.exports = function(passport){
             });
         }
     ));
-    
+
     passport.use('register', new LocalStrategy({
             usenameField:'username',
             passwordField:'password',
@@ -62,6 +63,12 @@ module.exports = function(passport){
                     }
                     console.log('running mongoose create');
                     User.create(userdata, function(err, user){
+                        if(err){
+                            return done(err);
+                        }
+                        return done(null);
+                    });
+                    Mech.create({}, function(err, mech){
                         console.log('creation complete');
                         if(err){
                             return done(err);
@@ -69,7 +76,7 @@ module.exports = function(passport){
                         return done(null);
                     });
                 }
-            });        
+            });
         }
     ));
 }
