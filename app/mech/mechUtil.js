@@ -1,5 +1,7 @@
 var User = require('../models/user');
 var Mech = require('../models/mech');
+var Part = require('../models/part');
+const Grammars = require('./grammars.js');
 
 function cleanMech(mech){
     return Object.assign({},mech._doc,{_id:undefined, userID:undefined,__v:undefined});
@@ -12,7 +14,7 @@ function getMech(uid, callback){
         }else {
             callback(mech);
         }
-    });    
+    });
 }
 
 function removePart(mech, point, done){
@@ -56,7 +58,53 @@ function installPart(mech, invSlot, point, done){
         } else {
             done(mech);
         }
-    });    
+    });
+}
+
+function makePart(mech, numAdj, done){
+    var partdata = {
+        name:'',
+        adjectives:[],
+        noun:{},
+        suffix:{},
+    }
+
+    //// TODO: check adjective not already used.
+
+    for (var i = 0; i < numAdj; i++) {
+      var adjIndex = Math.floor((Math.random() * Grammars.adjectives.length))
+      partdata.adjectives.push(Grammars.adjectives[adjIndex]);
+      partdata.name += Grammars.adjectives[adjIndex].name+' ';
+    }
+
+    var nounIndex = Math.floor((Math.random() * Grammars.nouns.length));
+    partdata.noun = Grammars.nouns[nounIndex];
+    partdata.name += Grammars.nouns[nounIndex].name+' ';
+
+    var suffixIndex = Math.floor((Math.random() * Grammars.suffixes.length));
+    partdata.suffix = Grammars.suffixes[suffixIndex];
+    partdata.name += Grammars.suffixes[suffixIndex].name;
+
+    Part.create(partdata, function(err, part){
+      if(err){
+          console.log(err);;
+      } else {
+        mech.inventory = [...mech.inventory, part];
+        mech.markModified('inventory');
+        console.log('..saving');
+        console.log(mech);
+        mech.save(function(err, mech){
+            if(err){
+                console.log(error);
+                done(null);
+            } else {
+                done(mech);
+            }
+        });
+      }
+    });
+
+
 }
 
 function movePart(mech, point, endPoint, done){
@@ -117,5 +165,6 @@ module.exports = {
     cleanMech,
     removePart,
     installPart,
-    movePart
+    movePart,
+    makePart
 }

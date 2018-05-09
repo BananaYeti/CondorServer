@@ -12,7 +12,7 @@ module.exports = function(app){
                     res.status(200).send(mech);
                 } else {
                     res.status(400).send("Error: no mech found");
-                }    
+                }
             });
         } else {
             res.status(401).send('Error: you are not authenticated');
@@ -29,7 +29,7 @@ module.exports = function(app){
                         res.status(200).send(mech);
                     } else {
                         res.status(400).send("Error: no mech found");
-                    }                        
+                    }
                 })
             });
         } else {
@@ -47,7 +47,7 @@ module.exports = function(app){
                         res.status(200).send(mech);
                     } else {
                         res.status(400).send("Error: no mech found");
-                    }                        
+                    }
                 })
             });
         } else {
@@ -65,11 +65,30 @@ module.exports = function(app){
                         res.status(200).send(mech);
                     } else {
                         res.status(400).send("Error: no mech found");
-                    }                        
+                    }
                 })
             });
         } else {
 
         }
     });
+    app.post('/mkPart', passportUtil.verifyUserRoute, function(req,res,next){
+        console.log("Part want be made");
+        if(req.decoded){
+            var uid = req.decoded.id;
+            var mech = mechUtil.getMech(uid, (mech) => {
+                mechUtil.makePart(mech,req.body.numAdj,(mech) => {
+                    mech = mechUtil.cleanMech(mech);
+                    console.log(mech);
+                    if(mech){
+                        res.status(200).send(mech);
+                    } else {
+                        res.status(400).send("Error: no mech found");
+                    }
+                })
+            });
+        } else {
+
+        }
+    })
 }
