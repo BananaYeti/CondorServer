@@ -1,0 +1,26 @@
+Impact
+Sonic
+Explosive
+
+Fire
+Plasma
+
+Corrosive
+
+Cutting
+Slashing
+Serrating
+
+Piercing
+
+Electric
+Energy
+Magnetic
+
+
+attack        Number
+attackSpeed   Number, lower = faster
+accuracy      %
+critChance    %
+critMult      Multiplier
+energy        Number
