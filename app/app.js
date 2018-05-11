@@ -51,6 +51,7 @@ function setupMiddleware(app){
 function setupSocketRoutes(httpSever){
     var ioServer = socketIO(httpSever);
     require('./socketchat/socketchat.js')(ioServer);
+    require('./battle/battle')(ioServer);
 }
 
 function setupRoutes(app){
