@@ -1,21 +1,38 @@
-Impact
-Sonic
-Explosive
+Impact:
+  Impact
+  Sonic
+  Explosive
 
-Fire
-Plasma
+Cut:
+  Cut
+  Slash
+  Serrate
 
-Corrosive
+Pierce:
+  Pierce
+  Puncture
+  Poke
 
-Cutting
-Slashing
-Serrating
+Heat:
+  Heat
+  Fire
+  Plasma
 
-Piercing
+Energy:
+  Energy
+  Electric
+  Magnetic
 
-Electric
-Energy
-Magnetic
+Reactive:
+  Toxic
+  Acid
+  Corrosive
+
+Rad:
+  Alpha
+  Beta
+  Gamma
+
 
 
 attack        Number
@@ -24,3 +41,44 @@ accuracy      %
 critChance    %
 critMult      Multiplier
 energy        Number
+
+
+
+Speed vs Damage
+Energy vs Damage
+Accuracy vs Damage
+Accuracy vs Speed
+
+
+Critical Chance vs Energy
+Critical Multiplier vs Energy
+
+
+
+
+
+Fist
+
+Knife
+Dagger
+
+Blade
+Katana
+Sword
+
+Saw
+Hammer
+
+Pistol
+Gun
+
+Shotgun
+Rifle
+Cannon
+
+Thrower
+Launcher
+Mortar
+
+Beam
+Discombobulator
