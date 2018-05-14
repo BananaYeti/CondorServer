@@ -72,12 +72,12 @@ module.exports = function(app){
 
         }
     });
-    app.post('/mkPart', passportUtil.verifyUserRoute, function(req,res,next){
+    app.post('/givePart', passportUtil.verifyUserRoute, function(req,res,next){
         console.log("Part want be made");
         if(req.decoded){
             var uid = req.decoded.id;
             var mech = mechUtil.getMech(uid, (mech) => {
-                mechUtil.makePart(mech,req.body.numAdj,(mech) => {
+                mechUtil.givePart(mech,req.body.player,req.body.point,(mech) => {
                     mech = mechUtil.cleanMech(mech);
                     console.log(mech);
                     if(mech){

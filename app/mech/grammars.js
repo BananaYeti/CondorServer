@@ -1,4 +1,4 @@
-var Grammars : {
+var Grammars = {
 nouns:{
   weapons:[
     {name:"Fist",
@@ -105,7 +105,7 @@ nouns:{
     {name:"Stabilizer", stats:{accuracy:50, power:-250}},
 
     {name:"Overclocker", stats:{speed:-15, power:-30}},
-    {name:"Exhaust", stats:{speed:-10, -20}},
+    {name:"Exhaust", stats:{speed:-10, power:-20}},
 
     {name:"Jet", stats:{dodge:5, power:-25}},
     {name:"Tread", stats:{dodge:10, power:-50}},
@@ -123,33 +123,33 @@ nouns:{
     {name:"Decal", stats:{multiplier:1.3}},
   ],
   appendages:[
-    {name:"Arm", size:2}
-    {name:"Leg", size:2}
-    {name:"Pack", size:3}
-    {name:"Wing", size:2}
-    {name:"Strut", size:2}
-    {name:"Tail", size:2}
-    {name:"Mandible", size:1}
-    {name:"Array", size:6}
-    {name:"Bank", size:6}
-    {name:"Turret", size:3}
-    {name:"Pole", size:1}
-    {name:"Head", size:2}
-    {name:"Segment", size:3}
-    {name:"Limb", size:2}
-    {name:"Frame", size:4}
+    {name:"Arm", size:2},
+    {name:"Leg", size:2},
+    {name:"Pack", size:3},
+    {name:"Wing", size:2},
+    {name:"Strut", size:2},
+    {name:"Tail", size:2},
+    {name:"Mandible", size:1},
+    {name:"Array", size:6},
+    {name:"Bank", size:6},
+    {name:"Turret", size:3},
+    {name:"Pole", size:1},
+    {name:"Head", size:2},
+    {name:"Segment", size:3},
+    {name:"Limb", size:2},
+    {name:"Frame", size:4},
     {name:"Support", size:4}
   ],
 },
 adjectives:[
-  {name:"Flaming", stats:{damage{fire:10}, defense:{resist:damageType.heat}}},
+  {name:"Flaming", stats:{damage:{fire:10}, defense:{resist:damageType.heat}}},
   {name:"Burning", stats:{upgrade:damageType.heat, defense:{resist:damageType.heat}}},
   {name:"Melting", stats:{damage:{plasma:10}, hp:-100}},
-  {name:"Rapid", stats:{speed:-10},
+  {name:"Rapid", stats:{speed:-10}},
   {name:"Electro", stats:{multiplier:{energy:1}, defense:{resist:damageType.energy}}},
   {name:"Electric", stats:{upgrade:damageType.energy, defense:{resist:damageType.energy}}},
   {name:"Rending", stats:{upgrade:damageType.cut}},
-  {name:"Advanced", stats:{power:50, powermod:-0.1},
+  {name:"Advanced", stats:{power:50, powermod:-0.1}},
   {name:"Plated", stats:{hp:100, vulnerable:damageType.acid}},
   {name:"Nano", stats:{upgrade:damageType.cut}},
   {name:"Super", stats:{multiplier:0.1}},
@@ -177,7 +177,7 @@ adjectives:[
   {name:"DIY", stats:{speed:-5, vulnerable:damageType.heat}},
   {name:"Shadow", stats:{speed:-10}},
   {name:"Lead", stats:{resist:damageType.rad, speed:5}},
-  {name:"Sharp", stats:{damage{slash:10}}},
+  //{name:"Sharp", stats:{damage{slash:10}}},
   {name:"Crazy", stats:{multiplier:{speed:-0.5}, accuracy:-10}},
   {name:"Rocket", stats:{damage:{explosive:10}}},
   {name:"Non_Euclidean", stats:{damage:{beta:10}, vulnerable:damageType.rad}},
@@ -310,8 +310,7 @@ adjectives:[
   {name:"Rusty", stats:{multiplier:-0.1, vulnerable:damageType.energy}},
   {name:"Trash", stats:{multiplier:-0.5}},
 ],
-],
-suffixes:{
+suffixes:[
   {name:'X',    tier:1, multiplier:2},
   {name:'XX',   tier:2, multiplier:2},
   {name:'XXX',  tier:3, multiplier:2},
@@ -327,5 +326,5 @@ suffixes:{
   {name:'V1',   tier:1, multiplier:1},
   {name:'V2',   tier:2, multiplier:1},
   {name:'V3',   tier:3, multiplier:1},
-},
+],
 }
