@@ -215,6 +215,22 @@ function getPart(mech, point){
     return part;
 }
 
+function givePart(mech, player, invSlot, done){
+    //player.mech.inventory = [...mech.inventory, part];
+    mech.inventory.splice(invSlot,1);
+    mech.markModified('inventory');
+    console.log('..saving');
+    console.log(mech);
+    mech.save(function(err, mech){
+        if(err){
+            console.log(error);
+            done(null);
+        } else {
+            done(mech);
+        }
+    });
+}
+
 function getParent(mech, point){
     if(point.length < 1){
         return null;
