@@ -72,8 +72,26 @@ module.exports = function(app){
 
         }
     });
-    app.post('/givePart', passportUtil.verifyUserRoute, function(req,res,next){
+    app.post('/mkPart', passportUtil.verifyUserRoute, function(req,res,next){
         console.log("Part want be made");
+        if(req.decoded){
+            var uid = req.decoded.id;
+            var mech = mechUtil.getMech(uid, (mech) => {
+                mechUtil.makePart(mech,req.body.numAdj,(mech) => {
+                    mech = mechUtil.cleanMech(mech);
+                    console.log(mech);
+                    if(mech){
+                        res.status(200).send(mech);
+                    } else {
+                        res.status(400).send("Error: no mech found");
+                    }
+                })
+            });
+        } else {
+
+        }
+    })
+    app.post('/givePart', passportUtil.verifyUserRoute, function(req,res,next){
         if(req.decoded){
             var uid = req.decoded.id;
             var mech = mechUtil.getMech(uid, (mech) => {

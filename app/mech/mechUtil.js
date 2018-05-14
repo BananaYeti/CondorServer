@@ -126,6 +126,27 @@ function partFromList(mech, numAdj, nounList, done){
 
 }
 
+function givePart(mech, player, invSlot, done){
+    var part = mech.inventory[invSlot];
+    if(part == null){
+        done(mech);
+    }
+    //mech.inventory.splice(invSlot,1);
+    //mech.markModified('inventory');
+    User.findOne({username:player}, function(err, user){
+      Mech.findOne({userID:user._id}, function(err, otherMech){
+          if(err){
+              return;
+          }else {
+              console.log("OTHER MECH: "+otherMech);
+              otherMech.inventory = [...otherMech.inventory, part];
+              otherMech.markModified('inventory');
+          }
+      });
+    });
+
+}
+
 function makeWeapon(mech, numAdj, done){
     var partdata = {
         name:'',
@@ -215,22 +236,6 @@ function getPart(mech, point){
     return part;
 }
 
-function givePart(mech, player, invSlot, done){
-    //player.mech.inventory = [...mech.inventory, part];
-    mech.inventory.splice(invSlot,1);
-    mech.markModified('inventory');
-    console.log('..saving');
-    console.log(mech);
-    mech.save(function(err, mech){
-        if(err){
-            console.log(error);
-            done(null);
-        } else {
-            done(mech);
-        }
-    });
-}
-
 function getParent(mech, point){
     if(point.length < 1){
         return null;
@@ -247,5 +252,6 @@ module.exports = {
     removePart,
     installPart,
     movePart,
-    makePart
+    makePart,
+    givePart
 }
