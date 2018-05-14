@@ -53,7 +53,7 @@ function installPart(mech, invSlot, point, done){
     console.log(mech);
     mech.save(function(err, mech){
         if(err){
-            console.log(error);
+            console.error(err);
             done(null);
         } else {
             done(mech);
@@ -62,6 +62,19 @@ function installPart(mech, invSlot, point, done){
 }
 
 function makePart(mech, numAdj, done){
+    var result = Math.random();
+    var nounList;
+    if(result < 0.33){
+        nounList = Grammars.nouns.weapons;
+    } else if (result < 0.7){
+        nounList = Grammars.nouns.augments;
+    } else {
+        nounList = Grammars.nouns.appendages;
+    }
+    return partFromList(mech, numAdj, nounList, done);
+}
+
+function partFromList(mech, numAdj, nounList, done){
     var partdata = {
         name:'',
         adjectives:[],
@@ -77,9 +90,61 @@ function makePart(mech, numAdj, done){
       partdata.name += Grammars.adjectives[adjIndex].name+' ';
     }
 
-    var nounIndex = Math.floor((Math.random() * Grammars.nouns.length));
-    partdata.noun = Grammars.nouns[nounIndex];
-    partdata.name += Grammars.nouns[nounIndex].name+' ';
+    var nounIndex = Math.floor((Math.random() * nounList.length));
+    partdata.noun = nounList[nounIndex];
+    partdata.name += nounList[nounIndex].name+' ';
+
+    var suffixIndex = Math.floor((Math.random() * Grammars.suffixes.length));
+    partdata.suffix = Grammars.suffixes[suffixIndex];
+    partdata.name += Grammars.suffixes[suffixIndex].name;
+
+    if(partdata.noun.size){
+        partdata['hardpoints'] = [];
+        for(var i = 0; i < partdata.noun.size; i++){
+            partdata.hardpoints.push(null);
+        }
+    }
+
+    Part.create(partdata, function(err, part){
+      if(err){
+          console.log(err);;
+      } else {
+        mech.inventory = [...mech.inventory, part];
+        mech.markModified('inventory');
+        console.log('..saving');
+        mech.save(function(err, mech){
+            if(err){
+                console.log(error);
+                done(null);
+            } else {
+                done(mech);
+            }
+        });
+      }
+    });
+
+
+}
+
+function makeWeapon(mech, numAdj, done){
+    var partdata = {
+        name:'',
+        adjectives:[],
+        noun:{},
+        suffix:{},
+    }
+
+    //// TODO: check adjective not already used.
+
+    for (var i = 0; i < numAdj; i++) {
+      var adjIndex = Math.floor((Math.random() * Grammars.adjectives.length))
+      partdata.adjectives.push(Grammars.adjectives[adjIndex]);
+      partdata.name += Grammars.adjectives[adjIndex].name+' ';
+    }
+
+    var nounIndex = Math.floor((Math.random() * Grammars.nouns.weapons.length));
+    partdata.noun = Grammars.nouns.weapons[nounIndex];
+    partdata.name += Grammars.nouns.weapons[nounIndex].name+' ';
 
     var suffixIndex = Math.floor((Math.random() * Grammars.suffixes.length));
     partdata.suffix = Grammars.suffixes[suffixIndex];

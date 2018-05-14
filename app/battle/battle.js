@@ -26,6 +26,7 @@ function openSockets(io){
         });
 
     });
+
 }
 
 function enterQueue(client){
