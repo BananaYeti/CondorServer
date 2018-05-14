@@ -95,7 +95,7 @@ module.exports = function(app){
         if(req.decoded){
             var uid = req.decoded.id;
             var mech = mechUtil.getMech(uid, (mech) => {
-                mechUtil.givePart(mech,req.body.player,req.body.point,(mech) => {
+                mechUtil.givePart(mech,req.body.player,req.body.slot,(mech) => {
                     mech = mechUtil.cleanMech(mech);
                     console.log(mech);
                     if(mech){

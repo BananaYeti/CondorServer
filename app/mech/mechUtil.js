@@ -127,12 +127,15 @@ function partFromList(mech, numAdj, nounList, done){
 }
 
 function givePart(mech, player, invSlot, done){
+    console.log(mech.inventory);
+    console.log(invSlot);
     var part = mech.inventory[invSlot];
     if(part == null){
         done(mech);
+        return;
     }
-    //mech.inventory.splice(invSlot,1);
-    //mech.markModified('inventory');
+    mech.inventory.splice(invSlot,1);
+    mech.markModified('inventory');
     User.findOne({username:player}, function(err, user){
       Mech.findOne({userID:user._id}, function(err, otherMech){
           if(err){
@@ -141,6 +144,11 @@ function givePart(mech, player, invSlot, done){
               console.log("OTHER MECH: "+otherMech);
               otherMech.inventory = [...otherMech.inventory, part];
               otherMech.markModified('inventory');
+              otherMech.save((err, otherMech) => {
+                mech.save((err, mech)=>{
+                    done(mech);
+                })
+                });
           }
       });
     });
