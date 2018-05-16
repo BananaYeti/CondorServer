@@ -24,6 +24,10 @@ var UserSchema = new  mongoose.Schema({
     },
     mechID:{
         type: mongoose.Schema.Types.ObjectId, ref:'Mech'
+    },
+    credits:{
+        type: Number,
+        default:1000
     }
 });
 

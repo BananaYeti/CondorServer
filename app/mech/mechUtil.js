@@ -27,11 +27,9 @@ function removePart(mech, point, done){
     mech.inventory = [...mech.inventory, part];
     mech.markModified('inventory');
     mech.markModified('hardpoints');
-    console.log('..saving');
-    console.log(mech);
     mech.save(function(err, mech){
         if(err){
-            console.log(error);
+            console.log(err);
             done(null);
         } else {
             done(mech);
@@ -49,8 +47,6 @@ function installPart(mech, invSlot, point, done){
     mech.inventory.splice(invSlot,1);
     mech.markModified('inventory');
     mech.markModified('hardpoints');
-    console.log('..saving');
-    console.log(mech);
     mech.save(function(err, mech){
         if(err){
             console.error(err);
@@ -111,10 +107,9 @@ function partFromList(mech, numAdj, nounList, done){
       } else {
         mech.inventory = [...mech.inventory, part];
         mech.markModified('inventory');
-        console.log('..saving');
         mech.save(function(err, mech){
             if(err){
-                console.log(error);
+                console.log(err);
                 done(null);
             } else {
                 done(mech);
@@ -127,8 +122,6 @@ function partFromList(mech, numAdj, nounList, done){
 }
 
 function givePart(mech, player, invSlot, done){
-    console.log(mech.inventory);
-    console.log(invSlot);
     var part = mech.inventory[invSlot];
     if(part == null){
         done(mech);
@@ -141,7 +134,6 @@ function givePart(mech, player, invSlot, done){
           if(err){
               return;
           }else {
-              console.log("OTHER MECH: "+otherMech);
               otherMech.inventory = [...otherMech.inventory, part];
               otherMech.markModified('inventory');
               otherMech.save((err, otherMech) => {
@@ -181,15 +173,13 @@ function makeWeapon(mech, numAdj, done){
 
     Part.create(partdata, function(err, part){
       if(err){
-          console.log(err);;
+          console.log(err);
       } else {
         mech.inventory = [...mech.inventory, part];
         mech.markModified('inventory');
-        console.log('..saving');
-        console.log(mech);
         mech.save(function(err, mech){
             if(err){
-                console.log(error);
+                console.log(err);
                 done(null);
             } else {
                 done(mech);
@@ -213,11 +203,9 @@ function movePart(mech, point, endPoint, done){
     endParent.hardpoints[endPoint[endPoint.length - 1]] = part;
     mech.markModified('inventory');
     mech.markModified('hardpoints');
-    console.log('..saving');
-    console.log(mech);
     mech.save(function(err, mech){
         if(err){
-            console.log(error);
+            console.log(err);
             done(null);
         } else {
             done(mech);

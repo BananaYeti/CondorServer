@@ -57,5 +57,5 @@ function setupSocketRoutes(httpSever){
 function setupRoutes(app){
     require('./userAuth/userAuth.js')(app, passport);
     require('./mech/mechRoutes.js')(app);
-    require('./bouts/matchmaking.js')(app);
+    require('./currency/currencyRoutes.js')(app);
 }
