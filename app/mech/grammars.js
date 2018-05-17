@@ -19,11 +19,11 @@ nouns:{
       },
     {name:"Blade",
       stats:{
-        attack:{cutting:50}, speed:45, accuracy:80, critChance:5, critMult:1}
+        attack:{cut:50}, speed:45, accuracy:80, critChance:5, critMult:1}
       },
     {name:"Sword",
       stats:{
-        attack:{cutting:100}, speed:75, accuracy:85, critChance:5, critMult:0.25}
+        attack:{cut:100}, speed:75, accuracy:85, critChance:5, critMult:0.25}
       },
     {name:"Spear",
       stats:{
@@ -83,14 +83,14 @@ nouns:{
       },
   ],
   augments:[
-    {name:"Padding", stats:{defense:{resist:damageType.impact}, hp:25, dodge:-5}},
-    {name:"Sync", stats:{defense:{resist:damageType.heat}, hp:50, dodge:-10}},
-    {name:"Shield", stats:{defense:{vulnerable:damageType.energy}, hp:150, dodge:-20}},
-    {name:"Plating", stats:{defense:{resist:damageType.cut}, hp:100, dodge:-20}},
+    {name:"Padding", stats:{resist:damageType.impact, hp:25, dodge:-5}},
+    {name:"Sync", stats:{resist:damageType.heat, hp:50, dodge:-10}},
+    {name:"Shield", stats:{vulnerable:damageType.energy, hp:150, dodge:-20}},
+    {name:"Plating", stats:{resist:damageType.cut, hp:100, dodge:-20}},
     {name:"Armor", stats:{hp:50, dodge:-10}},
     {name:"Carapace", stats:{hp:75, dodge:-15}},
     {name:"Mesh", stats:{hp:25, dodge:-5}},
-    {name:"Weave", stats:{defense:{resist:damageType.pierce}, hp:25, dodge:-5}},
+    {name:"Weave", stats:{resist:damageType.pierce, hp:25, dodge:-5}},
     {name:"Rig", stats:{hp:50, dodge:-10}},
     {name:"Crank", stats:{power:50, dodge:-5}},
     {name:"Capacitor", stats:{power:110, dodge:-10}},
@@ -126,9 +126,9 @@ nouns:{
 
     {name:"Computer", stats:{accuracy:10, dodge:10, power:-10}},
 
-    {name:"Spray", stats:{multiplier:1.1}},
-    {name:"Paint", stats:{multiplier:1.2}},
-    {name:"Decal", stats:{multiplier:1.3}},
+    {name:"Spray", stats:{, power:-10}},
+    {name:"Paint", stats:{, power:-10}},
+    {name:"Decal", stats:{, power:-10}},
   ],
   appendages:[
     {name:"Arm", size:2},
@@ -150,12 +150,12 @@ nouns:{
   ],
 },
 adjectives:[
-  {name:"Flaming", stats:{damage:{fire:10}, defense:{resist:damageType.heat}}},
-  {name:"Burning", stats:{upgrade:damageType.heat, defense:{resist:damageType.heat}}},
+  {name:"Flaming", stats:{damage:{fire:10}, resist:damageType.heat}},
+  {name:"Burning", stats:{upgrade:damageType.heat, resist:damageType.heat}},
   {name:"Melting", stats:{damage:{plasma:10}, hp:-100}},
   {name:"Rapid", stats:{speed:-10}},
-  {name:"Electro", stats:{multiplier:{energy:1}, defense:{resist:damageType.energy}}},
-  {name:"Electric", stats:{upgrade:damageType.energy, defense:{resist:damageType.energy}}},
+  {name:"Electro", stats:{multiplier:{energy:1}, resist:damageType.energy}},
+  {name:"Electric", stats:{upgrade:damageType.energy, resist:damageType.energy}},
   {name:"Rending", stats:{upgrade:damageType.cut}},
   {name:"Advanced", stats:{power:50, powermod:-0.1}},
   {name:"Plated", stats:{hp:100, vulnerable:damageType.acid}},
